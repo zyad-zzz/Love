@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="ar">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>عيد الحب ❤️</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial;
+            color: white;
+            text-align: center;
+            overflow: hidden;
+            height: 100vh;
+            font-weight: bold;
+            transition: background 2s ease;
+        }
+
+        /* card */
+        .card {
+            background: rgba(122, 31, 31, 0.9);
+            padding: 25px;
+            margin: 60px auto;
+            width: 90%;
+            max-width: 450px;
+            border-radius: 20px;
+            position: relative;
+            z-index: 2;
+            font-weight: bold;
+        }
+
+        input {
+            padding: 14px;
+            border-radius: 12px;
+            border: none;
+            width: 80%;
+            margin-bottom: 12px;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        button {
+            background: #ff3b3b;
+            border: none;
+            padding: 16px 24px;
+            border-radius: 50%;
+            color: white;
+            font-size: 28px;
+            cursor: pointer;
+            margin: 10px;
+            font-weight: bold;
+            transition: transform 0.2s;
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .love-box {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 20px;
+            border-radius: 20px;
+            margin: 20px 0;
+            font-size: 20px;
+            line-height: 2;
+            min-height: 120px;
+            font-weight: bold;
+        }
+
+        /* قلوب بسيطة للصفحات الثابتة */
+        .simple-heart {
+            position: absolute;
+            font-size: 20px;
+            color: #ff4d6d;
+            animation: floatSimple 6s linear infinite;
+            z-index: 1;
+        }
+
+        @keyframes floatSimple {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(-10vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* قلوب الخلفية المتحركة للصفحة الأخيرة */
+        .heart-bg {
+            position: absolute;
+            font-size: 20px;
+            color: #ff4d6d;
+            animation: floatBg 6s linear infinite;
+            z-index: 1;
+        }
+
+        @keyframes floatBg {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(-10vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* صورة المرحلة الثانية */
+        #ourPhoto {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 15px;
+            margin: 20px auto;
+            display: block;
+        }
+
+        /* Responsive للموبايل */
+        @media (max-width:480px) {
+            .card {
+                margin: 40px 10px;
+                padding: 20px;
+            }
+
+            input {
+                font-size: 20px;
+                padding: 16px;
+            }
+
+            button {
+                font-size: 32px;
+                padding: 20px 28px;
+            }
+
+            .love-box {
+                font-size: 22px;
+                padding: 25px;
+            }
+
+            #ourPhoto {
+                width: 180px;
+                height: 180px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- صفحة الباسورد -->
+    <div class="card" id="login">
+        <h2>كل عيد حب و انتي عيوني❤️</h2>
+        <p>اكتبي الباسورد 💌</p>
+        <input type="password" id="pass">
+        <br>
+        <button onclick="checkPass()">دوسي هنا لفتح قلبي</button>
+    </div>
+
+    <!-- صفحة الكلام قبل الصورة -->
+    <div class="card hidden" id="prePhoto">
+        <h2>عيون بابا😍</h2>
+        <div class="love-box" id="loveText"></div>
+        <button onclick="showPhoto()">دوسي هنا D</button>
+    </div>
+
+    <!-- صفحة الصورة + الأغنية -->
+    <div class="card hidden" id="photoPage">
+        <img src="صورتنا.jpeg" id="ourPhoto" alt="صورتنا">
+        <div class="love-box" id="songText"></div>
+        <button id="musicBtn" onclick="toggleMusic()">⏸</button>
+    </div>
+
+    <audio id="music" src="حلوة.mp3" loop></audio>
+
+    <script>
+        // الباسورد
+        let correctPass = "Dima";
+
+        // النصوص
+        let preMessage = `انتي مش بس حبيبتي ❤️
+انتي روحي و بنتي و اختي و صحبتي و أجمل حاجة حصلتلي 💖
+كل يوم معاكي نعمة بحمد ربنا عليها 🥰
+بحبك النهارده وبكرة وطول العمر يا اجمل هديه من ربنا ليا ✨
+ZYAD 💖 BAHORA`;
+
+        let songMessage = `بحبك اوي ياعيوني 💖`;
+
+        // قلوب بسيطة للصفحات الثابتة
+        function startSimpleHearts() {
+            setInterval(() => {
+                let heart = document.createElement("div");
+                heart.className = "simple-heart";
+                heart.innerHTML = "❤️";
+                heart.style.left = Math.random() * 100 + "vw";
+                heart.style.fontSize = (Math.random() * 20 + 15) + "px";
+                document.body.appendChild(heart);
+                setTimeout(() => { heart.remove(); }, 7000);
+            }, 800);
+        }
+
+        // الخلفية المتغيرة + قلوب كثيفة للصفحة الأخيرة
+        function startBackgroundAnimation() {
+            const colors = ["#4b0000", "#5a1010", "#6b1115", "#4a0010", "#7a1f1f"];
+            let index = 0;
+            setInterval(() => {
+                document.body.style.background = `linear-gradient(to bottom, ${colors[index]}, ${colors[(index + 1) % colors.length]})`;
+                index = (index + 1) % colors.length;
+            }, 4000);
+
+            setInterval(() => {
+                let heart = document.createElement("div");
+                heart.className = "heart-bg";
+                heart.innerHTML = "❤️";
+                heart.style.left = Math.random() * 100 + "vw";
+                heart.style.fontSize = (Math.random() * 30 + 20) + "px";
+                document.body.appendChild(heart);
+                setTimeout(() => { heart.remove(); }, 7000);
+            }, 400);
+        }
+
+        // بدء الخلفية الثابتة في الصفحات الأولى
+        document.body.style.background = "linear-gradient(to bottom, #4b0000, #1a0000)";
+        startSimpleHearts();
+
+        // فتح صفحة الكلام بعد الباسورد
+        function checkPass() {
+            let userPass = document.getElementById("pass").value.trim().toLowerCase();
+            if (userPass === correctPass.toLowerCase()) {
+                document.getElementById("login").classList.add("hidden");
+                document.getElementById("prePhoto").classList.remove("hidden");
+                typeWriterLines(preMessage, "loveText");
+            } else {
+                alert("الباسورد غلط 😢");
+            }
+        }
+
+        // ظهور الكلام جملة جملة (كل جملة في سطر منفصل)
+        function typeWriterLines(text, id) {
+            let lines = text.split('\n');
+            let container = document.getElementById(id);
+            let i = 0;
+            function typingLine() {
+                if (i < lines.length) {
+                    let words = lines[i].split(" ");
+                    let j = 0;
+                    function typingWord() {
+                        if (j < words.length) {
+                            container.innerHTML += words[j] + " ";
+                            j++;
+                            setTimeout(typingWord, 250);
+                        } else {
+                            container.innerHTML += "<br>";
+                            i++;
+                            setTimeout(typingLine, 300);
+                        }
+                    }
+                    typingWord();
+                }
+            }
+            typingLine();
+        }
+
+        // الانتقال للصفحة الثانية (الصورة + الأغنية)
+        function showPhoto() {
+            document.getElementById("prePhoto").classList.add("hidden");
+            document.getElementById("photoPage").classList.remove("hidden");
+            startBackgroundAnimation(); // الخلفية تتحرك هنا
+            music.play(); // تشغيل الأغنية تلقائي
+            typeWriterLines(songMessage, "songText");
+        }
+
+        // زر التحكم بالموسيقى بالرموز فقط
+        function toggleMusic() {
+            let music = document.getElementById("music");
+            let btn = document.getElementById("musicBtn");
+            if (music.paused) {
+                music.play();
+                btn.innerHTML = "⏸";
+            } else {
+                music.pause();
+                btn.innerHTML = "▶️";
+            }
+        }
+    </script>
+
+</body>
+
+</html>
